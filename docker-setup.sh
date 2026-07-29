@@ -19,3 +19,5 @@ sudo docker compose version
 
 echo ""
 echo "Done. Run 'newgrp docker' (or log out & back in) to use docker without sudo."
+echo ""
+echo "Done. Run 'newgrp docker' (or log out & back in) to use docker without sudo."

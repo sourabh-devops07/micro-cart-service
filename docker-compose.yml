@@ -2,32 +2,41 @@ services:
   cart-service:
     image: sourabh071/cart-service:1.0
     container_name: cart-service
+
     ports:
       - "8004:8004"
+
     environment:
-      PORT: 8004
-      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@cart-db:5432/cart_db"
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@cart-db:5432/cart_db
       JWT_SECRET: ${JWT_SECRET}
+
     depends_on:
       cart-db:
         condition: service_healthy
+
     restart: unless-stopped
+
 
   cart-db:
     image: postgres:16-alpine
     container_name: cart-db
+
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: cart_db
+
     volumes:
       - cart-db-data:/var/lib/postgresql/data
+
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d cart_db"]
       interval: 5s
       timeout: 3s
       retries: 10
+
     restart: unless-stopped
+
 
 volumes:
   cart-db-data:
